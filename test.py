@@ -2,22 +2,35 @@ from lxml import etree
 import re
 import urllib2
 
-baseURL = 'http://www.youdaili.net/Daili/guonei/3704.html'
-user_agent = 'Mozilla/5.0 (Windows NT 6.1) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/39.0.2171.95 Safari/537.36'
-headers = { 'User-Agent' : user_agent }
-req = urllib2.Request(baseURL, None, headers)
-resp = urllib2.urlopen(req)
+def printText(node):
+    ip = ''
+    if(len(node.items()) > 0 and len(node.items()[0]) >= 2 and node.items()[0][0] == 'style' and 'none' in node.items()[0][1]):
+        return ''
+    if(node.text != None):
+        ip += node.text
+    else:
+        for subnode in node.getchildren():
+            ip += printText(subnode)
+    return ip
+
+baseURL = 'http://proxy.goubanjia.com/free/'
+# user_agent = 'Mozilla/5.0 (Windows NT 6.1) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/39.0.2171.95 Safari/537.36'
+# headers = { 'User-Agent' : user_agent }
+# req = urllib2.Request(baseURL, None, headers)
+# resp = urllib2.urlopen(req)
 # resp = urllib2.urlopen(baseURL)
-content = resp.read()
-resp.close()
-with open('r.txt', 'w') as c:
-    c.write(content)
-ret = re.findall(r'\d+\.\d+\.\d+\.\d+\:\d+', content)
-print ret
+# content = resp.read()
+# resp.close()
+# with open('r.txt', 'w') as c:
+#     c.write(content)
+# ret = re.findall(r'\d+\.\d+\.\d+\.\d+\:\d+', content)
+# print ret
     
 # tree = etree.HTML(content)
-# ipNodes = tree.xpath('//*[@id="ctl00_ContentPlaceHolder1_upProjectList"]/div/div[1]/span[1]')
-# portNodes = tree.xpath('//*[@id="ctl00_ContentPlaceHolder1_upProjectList"]/div/div[1]/span[2]')
+# ipNodes = tree.xpath('//*[@id="list"]/table/tbody/tr/td[1]')
+# portNodes = tree.xpath('//*[@id="list"]/table/tbody/tr/td[2]')
 # 
 # for node in ipNodes:
-#     print node.text.strip()
+#     ip = printText(node)
+#     print ip
+    
