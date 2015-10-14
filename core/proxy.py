@@ -5,6 +5,7 @@ import urllib2
 from lxml import etree
 
 class Proxy:
+    name = 'base'
     def __init__(self, addr, time):
         self.address = addr
         self.time = time
